@@ -12,9 +12,10 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 modelo = ChatOpenAI(
-    model="gpt-4o-mini",
+    model="deepseek-chat",
     temperature=0.5,
-    api_key=api_key
+    api_key=api_key,
+    base_url="https://api.deepseek.com"
 )
 
 prompt_consultor_praia = ChatPromptTemplate.from_messages(
@@ -32,19 +33,27 @@ prompt_consultor_montanha = ChatPromptTemplate.from_messages(
 )
 
 cadeia_praia = prompt_consultor_praia | modelo | StrOutputParser()
-cadeia_montanha = prompt_consultor_montanha |modelo | StrOutputParser()
+cadeia_montanha = prompt_consultor_montanha | modelo | StrOutputParser()
 
 class Rota(TypedDict):
     destino: Literal["praia", "montanha"]
 
 prompt_roteador = ChatPromptTemplate.from_messages(
     [
-        ("system", "Responda apenas com 'praia' ou 'montanha'"),
+        ("system", "Você é um roteador. Responda APENAS com a palavra 'praia' ou 'montanha', sem nenhum texto adicional."),
         ("human", "{query}")
     ]
 )
 
-roteador = prompt_roteador | modelo.with_structured_output(Rota)
+def parseador_rota(texto: str) -> Rota:
+    """Extrai 'praia' ou 'montanha' da resposta"""
+    texto_limpo = texto.strip().lower()
+    if "praia" in texto_limpo:
+        return {"destino": "praia"}
+    else:
+        return {"destino": "montanha"}
+
+roteador = prompt_roteador | modelo | StrOutputParser() | parseador_rota
 
 class Estado(TypedDict):
     query:str

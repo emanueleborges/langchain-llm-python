@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.document_loaders import TextLoader, PyPDFLoader
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -11,12 +12,13 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 modelo = ChatOpenAI(
-    model="gpt-4o-mini",
+    model="deepseek-chat",
     temperature=0.5,
-    api_key=api_key
+    api_key=api_key,
+    base_url="https://api.deepseek.com"
 )
 
-embeddings = OpenAIEmbeddings()
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
 arquivos = [
     "documentos/GTB_standard_Nov23.pdf",

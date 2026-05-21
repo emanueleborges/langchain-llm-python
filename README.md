@@ -54,11 +54,37 @@ Para executar o script principal que utiliza o Deepseek para sugerir destinos tu
 python main.py
 ```
 
-Este script:
-- Solicita sugestões de cidades baseado em um interesse (ex: "praias")
-- Retorna restaurantes populares da cidade sugerida
-- Lista atividades culturais locais
-- Utiliza o modelo `deepseek-chat` da Deepseek API
+### 🎨 Interfaces Web (Streamlit)
+
+Também existem frontends interativos para cada aplicação. Instale Streamlit (se ainda não tiver):
+
+```bash
+pip install streamlit
+```
+
+Depois execute qualquer uma das interfaces:
+
+**1. Recomendador de Destinos:**
+```bash
+streamlit run frontend_main.py
+```
+
+**2. Chat de Viagem com Memória:**
+```bash
+streamlit run frontend_chat.py
+```
+
+**3. Consulta de Documentos (RAG):**
+```bash
+streamlit run frontend_rag.py
+```
+
+**4. Roteador Inteligente de Viagem:**
+```bash
+streamlit run frontend_langgraph.py
+```
+
+Cada interface abrirá em `http://localhost:8501`
 
 ### Scripts Disponíveis
 
@@ -67,18 +93,33 @@ Este script:
 - **main_rag.py** - Implementação de RAG (Retrieval-Augmented Generation)
 - **main_langgraph.py** - Usando LangGraph para fluxos complexos
 
+### 🎨 Interfaces Web (Streamlit)
+
+| Interface | Comando | Descrição |
+|-----------|---------|-----------|
+| **Recomendador** | `streamlit run frontend_main.py` | 🏖️ Recomenda destinos com restaurantes e atividades culturais |
+| **Chat** | `streamlit run frontend_chat.py` | 💬 Conversa com Sr. Passeios mantendo histórico |
+| **RAG** | `streamlit run frontend_rag.py` | 📚 Consulta documentos com busca semântica |
+| **Roteador** | `streamlit run frontend_langgraph.py` | 🧭 Roteia para especialista (praia ou montanha) |
+
 ## 📋 Estrutura do Projeto
 
 ```
 .
-├── main.py               # Script principal
-├── main_chat.py          # Chat interativo
-├── main_rag.py           # RAG com documentos
-├── main_langgraph.py     # LangGraph workflows
-├── requirements.txt      # Dependências
-├── .env                  # Variáveis de ambiente
-├── README.md             # Este arquivo
-└── documentos/           # Documentos para RAG
+├── main.py                   # Script principal
+├── main_chat.py              # Chat interativo
+├── main_rag.py               # RAG com documentos
+├── main_langgraph.py         # LangGraph workflows
+│
+├── frontend_main.py          # 🎨 Interface Streamlit - Recomendador
+├── frontend_chat.py          # 🎨 Interface Streamlit - Chat
+├── frontend_rag.py           # 🎨 Interface Streamlit - RAG
+├── frontend_langgraph.py     # 🎨 Interface Streamlit - Roteador
+│
+├── requirements.txt          # Dependências
+├── .env                      # Variáveis de ambiente
+├── README.md                 # Este arquivo
+└── documentos/               # Documentos para RAG
     └── GTB_gold_Nov23.txt
 ```
 
