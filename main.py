@@ -10,6 +10,11 @@ set_debug(True)
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
+deepseek_api_key = os.getenv("OPENAI_API_KEY")  # Usando Deepseek com a chave
+if deepseek_api_key is None:
+    raise ValueError("A chave da API não foi definida no .env")
+
+print("Chave carregada com sucesso!")
 
 class Destino(BaseModel):
     cidade:str = Field("A cidade recomendada para visitar")
@@ -44,9 +49,10 @@ prompt_cultural = PromptTemplate(
 )
 
 modelo = ChatOpenAI(
-    model="gpt-3.5-turbo",
+    model="deepseek-chat",
     temperature=0.5,
-    api_key=api_key
+    api_key=deepseek_api_key,
+    base_url="https://api.deepseek.com"
 )
 
 cadeia_1 = prompt_cidade | modelo | parseador_destino
@@ -57,7 +63,7 @@ cadeia = (cadeia_1 | cadeia_2 | cadeia_3)
 
 resposta = cadeia.invoke(
     {
-        "interesse" : "praias"
+        "interesse" : "shopping"
     }
 )
 print(resposta)
